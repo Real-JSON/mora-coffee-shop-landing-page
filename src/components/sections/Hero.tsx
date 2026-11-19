@@ -227,7 +227,7 @@ export default function Hero() {
                                 <span className="absolute -top-4 left-0.5 text-[9px] font-normal tracking-[0.24em] text-white/85 sm:-top-6 sm:text-xs md:-top-7 md:text-sm">
                                     {currentItem.categoryLabel}
                                 </span>
-                                <span className="tracking-widest">
+                                <span className="tracking-[.8rem] md:tracking-widest">
                                     {currentItem.fullWord}
                                 </span>
                             </span>
