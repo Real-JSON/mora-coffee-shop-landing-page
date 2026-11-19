@@ -45,7 +45,7 @@ export default function RootLayout({
     return (
         <html lang="en" className={`${oswald.variable} ${manrope.variable}`}>
             <body>
-                {/* <Header /> */}
+                <Header />
                 <main>{children}</main>
                 <Footer />
             </body>
