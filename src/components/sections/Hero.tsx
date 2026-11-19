@@ -355,7 +355,7 @@ export default function Hero() {
                     <div className="flex justify-center">
                         <Link
                             href={currentItem.ctaHref}
-                            className="group inline-flex shrink-0 items-center gap-3 whitespace-nowrap rounded-full border border-white/35 bg-white/10 px-6 py-2.5 text-xs font-medium tracking-wide text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white hover:bg-[#d8a477] hover:text-[#24140B] active:scale-95"
+                            className="group inline-flex shrink-0 items-center gap-3 whitespace-nowrap rounded-full border border-white/35 bg-white/10 px-6 py-2.5 text-xs font-medium tracking-wide text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-[#d8a477] hover:text-[#24140B] active:scale-95"
                         >
                             <span>{currentItem.ctaLabel}</span>
                             <span
