@@ -3,6 +3,7 @@ import { Oswald, Manrope } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import PageLoader from "@/components/layout/PageLoader";
 
 const oswald = Oswald({
     variable: "--font-oswald",
@@ -45,6 +46,7 @@ export default function RootLayout({
     return (
         <html lang="en" className={`${oswald.variable} ${manrope.variable}`}>
             <body>
+                <PageLoader />
                 <Header />
                 <main>{children}</main>
                 <Footer />
