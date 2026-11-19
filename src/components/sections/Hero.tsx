@@ -83,18 +83,9 @@ const SHOWCASE_ITEMS: CoffeeShowcaseItem[] = [
     },
 ];
 
-const NAV_LINKS = [
-    { number: "01", label: "Home", href: "/" },
-    { number: "02", label: "Menu", href: "/menu" },
-    { number: "03", label: "Rewards", href: "/rewards" },
-    { number: "04", label: "About MŌRA", href: "/our-story" },
-    { number: "05", label: "Contact", href: "/contact" },
-];
-
 export default function Hero() {
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const [direction, setDirection] = useState<"next" | "prev">("next");
-    const [menuOpen, setMenuOpen] = useState<boolean>(false);
     const touchStartX = useRef<number | null>(null);
 
     const currentItem = SHOWCASE_ITEMS[activeIndex] ?? SHOWCASE_ITEMS[0];
@@ -119,33 +110,15 @@ export default function Hero() {
         setActiveIndex(index);
     };
 
-    // Keyboard navigation (Escape to close menu, Left/Right arrows to switch drinks)
+    // Keyboard navigation (Left/Right arrows to switch drinks)
     useEffect(() => {
         const onKeyDown = (e: KeyboardEvent) => {
-            if (e.key === "Escape" && menuOpen) {
-                setMenuOpen(false);
-                return;
-            }
-            if (!menuOpen) {
-                if (e.key === "ArrowRight") handleNext();
-                if (e.key === "ArrowLeft") handlePrev();
-            }
+            if (e.key === "ArrowRight") handleNext();
+            if (e.key === "ArrowLeft") handlePrev();
         };
         window.addEventListener("keydown", onKeyDown);
         return () => window.removeEventListener("keydown", onKeyDown);
     });
-
-    // Lock background scroll when 80% overlay menu is open
-    useEffect(() => {
-        if (menuOpen) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "";
-        }
-        return () => {
-            document.body.style.overflow = "";
-        };
-    }, [menuOpen]);
 
     // Mobile swipe handlers
     const handleTouchStart = (e: React.TouchEvent) => {
@@ -167,7 +140,7 @@ export default function Hero() {
             aria-label="MŌRA specialty coffee hero"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
-            className="relative min-h-[700px] w-full overflow-hidden bg-[#24140B] text-white sm:min-h-[760px] lg:min-h-[820px]"
+            className="relative min-h-[900px] w-full overflow-hidden bg-[#24140B] pt-[82px] text-white sm:min-h-[850px] lg:min-h-dvh"
         >
             {/* Inline Keyframes for Silky Cup & Text Entrance + Ambient Float */}
             <style jsx>{`
@@ -240,198 +213,8 @@ export default function Hero() {
                 className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/35"
             />
 
-            {/* Top Bar: Brand Lockup & Menu Toggle on Top-Right */}
-            <header className="relative z-30 mx-auto flex max-w-[1440px] items-start justify-between px-5 pt-5 sm:px-9 sm:pt-7 lg:px-12 lg:pt-8">
-                <Link
-                    href="/"
-                    className="group inline-flex items-center gap-2 text-xs font-semibold tracking-[0.22em] text-white/80 transition-colors duration-300 hover:text-white"
-                >
-                    <span className="transition-transform duration-300 group-hover:translate-x-0.5">
-                        MŌRA
-                    </span>
-                    <span className="text-white/40">·</span>
-                    <span className="text-[10px] uppercase text-white/65">
-                        KANDY
-                    </span>
-                </Link>
-
-                {/* Right Brand Stack + Circular Menu Button */}
-                <div className="flex items-center gap-4 sm:gap-5">
-                    <div className="text-right leading-none">
-                        <div className="flex items-center justify-end gap-1 text-lg font-extrabold tracking-[0.14em] text-white sm:text-xl">
-                            <span>M</span>
-                            <span>Ō</span>
-                            <span>R</span>
-                            <span>A</span>
-                        </div>
-                        <p className="mt-1 text-[8px] font-medium uppercase tracking-[0.22em] text-white/75 sm:text-[9px]">
-                            TRY DELICIOUS
-                        </p>
-                    </div>
-
-                    <button
-                        type="button"
-                        onClick={() => setMenuOpen((prev) => !prev)}
-                        aria-expanded={menuOpen}
-                        aria-label="Toggle navigation menu"
-                        className="group flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#24140B] shadow-md transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 sm:h-10 sm:w-10"
-                    >
-                        <span className="flex flex-col items-center justify-center gap-[3.5px]">
-                            <span className="block h-[2px] w-4 rounded-full bg-[#24140B] transition-transform duration-300 group-hover:translate-x-0.5" />
-                            <span className="block h-[2px] w-4 rounded-full bg-[#24140B] transition-transform duration-300 group-hover:-translate-x-0.5" />
-                        </span>
-                    </button>
-                </div>
-            </header>
-
-            {/* =========================================================
-          80% WIDTH FULL-SCREEN OVERLAY MENU (Smoothly Animated)
-         ========================================================= */}
-            <div
-                role="dialog"
-                aria-modal="true"
-                aria-hidden={!menuOpen}
-                aria-label="Site navigation"
-                onClick={() => setMenuOpen(false)}
-                className={`fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-md transition-all duration-500 ease-out ${
-                    menuOpen
-                        ? "pointer-events-auto opacity-100"
-                        : "pointer-events-none opacity-0"
-                }`}
-            >
-                <div
-                    onClick={(e) => e.stopPropagation()}
-                    className={`relative flex min-h-[82vh] w-[80vw] flex-col justify-between rounded-3xl border border-white/15 bg-[#1B0F08]/95 p-6 shadow-[0_30px_80px_rgba(0,0,0,0.85)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:p-10 lg:p-14 ${
-                        menuOpen
-                            ? "translate-y-0 scale-100 opacity-100"
-                            : "translate-y-6 scale-95 opacity-0"
-                    }`}
-                >
-                    {/* Overlay Top Bar */}
-                    <div className="flex items-center justify-between border-b border-white/10 pb-5">
-                        <div>
-                            <span className="text-lg font-extrabold tracking-[0.22em] text-white sm:text-xl">
-                                MŌRA
-                            </span>
-                            <p className="mt-0.5 text-[10px] uppercase tracking-[0.2em] text-[#d8a477]">
-                                Specialty Coffee · Kandy
-                            </p>
-                        </div>
-
-                        <button
-                            type="button"
-                            onClick={() => setMenuOpen(false)}
-                            aria-label="Close navigation menu"
-                            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#24140B] shadow-md transition-all duration-300 hover:rotate-90 hover:scale-105 active:scale-95"
-                        >
-                            <svg
-                                className="h-4 w-4"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth={2.4}
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    d="M6 18L18 6M6 6l12 12"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                            </svg>
-                        </button>
-                    </div>
-
-                    {/* Center Links Grid */}
-                    <div className="my-auto grid grid-cols-1 gap-10 py-8 md:grid-cols-12 md:items-center">
-                        <nav
-                            aria-label="Main navigation"
-                            className="md:col-span-7"
-                        >
-                            <ul className="flex flex-col gap-4 sm:gap-5">
-                                {NAV_LINKS.map((item, idx) => (
-                                    <li
-                                        key={item.href}
-                                        style={{
-                                            transitionDelay: menuOpen
-                                                ? `${idx * 65 + 100}ms`
-                                                : "0ms",
-                                        }}
-                                        className={`transition-all duration-500 ease-out ${
-                                            menuOpen
-                                                ? "translate-x-0 opacity-100"
-                                                : "-translate-x-6 opacity-0"
-                                        }`}
-                                    >
-                                        <Link
-                                            href={item.href}
-                                            onClick={() => setMenuOpen(false)}
-                                            className="group inline-flex items-baseline gap-4 transition-transform duration-300 hover:translate-x-3"
-                                        >
-                                            <span className="text-xs font-semibold tracking-[0.2em] text-[#d8a477] transition-transform duration-300 group-hover:scale-110">
-                                                {item.number}
-                                            </span>
-                                            <span className="text-2xl font-bold uppercase tracking-tight text-white transition-colors duration-300 group-hover:text-[#d8a477] sm:text-4xl lg:text-5xl">
-                                                {item.label}
-                                            </span>
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </nav>
-
-                        {/* Right Column Info (Tablet & Desktop) */}
-                        <div
-                            style={{
-                                transitionDelay: menuOpen ? "240ms" : "0ms",
-                            }}
-                            className={`hidden border-l border-white/10 pl-8 transition-all duration-500 ease-out md:col-span-5 md:flex md:flex-col md:gap-6 ${
-                                menuOpen
-                                    ? "translate-y-0 opacity-100"
-                                    : "translate-y-4 opacity-0"
-                            }`}
-                        >
-                            <div>
-                                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#d8a477]">
-                                    Coffeehouse
-                                </p>
-                                <p className="mt-2 text-sm leading-relaxed text-white/75">
-                                    Thoughtfully crafted, playfully expressed,
-                                    and made to be remembered in the heart of
-                                    Kandy.
-                                </p>
-                            </div>
-
-                            <div>
-                                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#d8a477]">
-                                    Daily Hours
-                                </p>
-                                <p className="mt-1.5 text-sm text-white/85">
-                                    Mon – Sun · 7:30 AM – 9:30 PM
-                                </p>
-                            </div>
-
-                            <Link
-                                href="/menu"
-                                onClick={() => setMenuOpen(false)}
-                                className="group mt-2 inline-flex w-fit items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-white hover:bg-white hover:text-[#24140B]"
-                            >
-                                <span>Explore Full Menu</span>
-                                <span className="transition-transform duration-300 group-hover:translate-x-1">
-                                    &rsaquo;
-                                </span>
-                            </Link>
-                        </div>
-                    </div>
-
-                    {/* Overlay Bottom Bar */}
-                    <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-4 text-[11px] uppercase tracking-[0.18em] text-white/55">
-                        <span>A Little Ritual · A Lot Of Feeling</span>
-                        <span>Kandy, Sri Lanka</span>
-                    </div>
-                </div>
-            </div>
-
             {/* Main Centerpiece Stage */}
-            <div className="relative z-20 mx-auto flex min-h-[580px] max-w-[1440px] flex-col justify-between px-5 pb-7 pt-6 sm:min-h-[640px] sm:px-9 sm:pb-9 lg:min-h-[700px] lg:px-12 lg:pb-11">
+            <div className="relative z-20 mx-auto flex min-h-[620px] max-w-[1440px] flex-col justify-between px-5 pb-7 pt-6 sm:min-h-[680px] sm:px-9 sm:pb-9 lg:min-h-[calc(100dvh-82px)] lg:px-12 lg:pb-11">
                 {/* Center Wordmark + Transparent PNG Drink Cup + Bottom Slide Controls */}
                 <div className="relative my-auto flex min-h-[320px] flex-col items-center justify-center py-4 sm:min-h-[400px] lg:min-h-[470px]">
                     <div className="relative flex w-full max-w-6xl items-center justify-center">
@@ -480,7 +263,7 @@ export default function Hero() {
                             type="button"
                             onClick={handlePrev}
                             aria-label="Previous drink"
-                            className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white/90 backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:border-white/50 hover:bg-white/20 active:scale-95"
+                            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-white/10 text-white/90 backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:border-white/50 hover:bg-white/20 active:scale-95"
                         >
                             <svg
                                 className="h-4 w-4"
@@ -509,7 +292,7 @@ export default function Hero() {
                                         className={`h-1.5 rounded-full transition-all duration-300 ${
                                             isActive
                                                 ? "w-5 bg-white"
-                                                : "w-1.5 bg-white/35 hover:bg-white/70"
+                                                : "w-1.5 cursor-pointer bg-white/35 hover:bg-white/70"
                                         }`}
                                     />
                                 );
@@ -520,7 +303,7 @@ export default function Hero() {
                             type="button"
                             onClick={handleNext}
                             aria-label="Next drink"
-                            className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white/90 backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:border-white/50 hover:bg-white/20 active:scale-95"
+                            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-white/10 text-white/90 backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:border-white/50 hover:bg-white/20 active:scale-95"
                         >
                             <svg
                                 className="h-4 w-4"
@@ -562,7 +345,7 @@ export default function Hero() {
                     {/* Bottom-Center: Open menu pill CTA */}
                     <Link
                         href={currentItem.ctaHref}
-                        className="group inline-flex items-center gap-3 rounded-full border border-white/35 bg-white/10 px-6 py-2.5 text-xs font-medium tracking-wide text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white hover:bg-white hover:text-[#24140B] active:scale-95"
+                        className="group inline-flex items-center gap-3 rounded-full border border-white/35 bg-white/10 px-6 py-2.5 text-xs font-medium tracking-wide text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white hover:bg-[#d8a477] hover:text-[#24140B] active:scale-95"
                     >
                         <span>{currentItem.ctaLabel}</span>
                         <span
