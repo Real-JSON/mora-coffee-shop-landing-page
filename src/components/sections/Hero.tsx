@@ -140,7 +140,7 @@ export default function Hero() {
             aria-label="MŌRA specialty coffee hero"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
-            className="relative min-h-[900px] w-full overflow-hidden bg-[#24140B] pt-[82px] text-white sm:min-h-[850px] lg:min-h-dvh"
+            className="relative min-h-225 w-full overflow-hidden bg-[#24140B] pt-20.5 text-white sm:min-h-212.5 lg:min-h-dvh"
         >
             {/* Inline Keyframes for Silky Cup & Text Entrance + Ambient Float */}
             <style jsx>{`
@@ -210,20 +210,21 @@ export default function Hero() {
             />
             <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/35"
+                className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/55 via-transparent to-black/35"
             />
 
             {/* Main Centerpiece Stage */}
-            <div className="relative z-20 mx-auto flex min-h-[620px] max-w-[1440px] flex-col justify-between px-5 pb-7 pt-6 sm:min-h-[680px] sm:px-9 sm:pb-9 lg:min-h-[calc(100dvh-82px)] lg:px-12 lg:pb-11">
+            <div className="relative z-20 mx-auto flex min-h-155 max-w-360 flex-col justify-between px-5 pb-7 pt-6 sm:min-h-170 sm:px-9 sm:pb-9 lg:min-h-[calc(100dvh-82px)] lg:px-12 lg:pb-11">
                 {/* Center Wordmark + Transparent PNG Drink Cup + Bottom Slide Controls */}
-                <div className="relative my-auto flex min-h-[320px] flex-col items-center justify-center py-4 sm:min-h-[400px] lg:min-h-[470px]">
+                <div className="relative my-auto flex min-h-80 flex-col items-center justify-center py-4 sm:min-h-100 lg:min-h-117.5">
                     <div className="relative flex w-full max-w-6xl items-center justify-center">
+                        {/* Background Text (z-0) */}
                         <div
                             key={`word-${currentItem.id}`}
                             className="animate-text-reveal relative z-0 flex select-none items-center justify-center font-black uppercase leading-none tracking-[-0.04em] text-white text-[64px] sm:text-[118px] md:text-[156px] lg:text-[205px] xl:text-[238px]"
                         >
                             <span className="relative">
-                                <span className="absolute -top-4 left-0.5 text-[10px] font-normal tracking-[0.24em] text-white/85 sm:-top-6 sm:text-xs md:-top-7 md:text-sm">
+                                <span className="absolute -top-4 left-0.5 text-[9px] font-normal tracking-[0.24em] text-white/85 sm:-top-6 sm:text-xs md:-top-7 md:text-sm">
                                     {currentItem.categoryLabel}
                                 </span>
                                 <span className="tracking-widest">
@@ -232,7 +233,15 @@ export default function Hero() {
                             </span>
                         </div>
 
-                        {/* Transparent PNG Cup Centered Over the Wordmark (Uniform Responsive Scale) */}
+                        {/* Soft Shadow Layer Between Text and Cup (z-[5]) */}
+                        <div
+                            aria-hidden="true"
+                            className="pointer-events-none absolute inset-0 z-5 flex items-center justify-center"
+                        >
+                            <div className="h-55 w-55 rounded-full bg-black/35 blur-3xl sm:h-80 sm:w-80 lg:h-95 lg:w-95" />
+                        </div>
+
+                        {/* Transparent PNG Cup Centered Over the Wordmark (z-10) */}
                         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
                             <div
                                 key={`cup-${currentItem.id}`}
@@ -250,7 +259,7 @@ export default function Hero() {
                                         priority
                                         unoptimized
                                         sizes="(max-width: 640px) 260px, (max-width: 1024px) 420px, 480px"
-                                        className="h-full w-full object-contain object-center drop-shadow-[0_28px_36px_rgba(0,0,0,0.55)]"
+                                        className="h-full w-full object-contain object-center drop-shadow-[0_32px_45px_rgba(0,0,0,0.85)]"
                                     />
                                 </div>
                             </div>
@@ -323,7 +332,7 @@ export default function Hero() {
                 </div>
 
                 {/* Bottom Row: Price Today (Left), Open Menu Pill (Center), Origin Lockup (Right) */}
-                <div className="relative z-20 flex flex-col items-center justify-between gap-6 sm:flex-row sm:items-end">
+                <div className="relative z-20 grid grid-cols-1 items-center gap-6 sm:grid-cols-[1fr_auto_1fr] sm:items-end sm:gap-4">
                     {/* Bottom-Left: Price today */}
                     <div
                         key={`price-${currentItem.id}`}
@@ -332,7 +341,7 @@ export default function Hero() {
                         <span className="text-[11px] font-normal tracking-wide text-white/75">
                             Price today
                         </span>
-                        <div className="mt-1 flex items-baseline gap-1 font-bold text-white">
+                        <div className="mt-1 flex items-end gap-1 font-bold text-white">
                             <span className="text-3xl leading-none tracking-tight sm:text-4xl lg:text-[42px]">
                                 {currentItem.price}
                             </span>
@@ -342,26 +351,28 @@ export default function Hero() {
                         </div>
                     </div>
 
-                    {/* Bottom-Center: Open menu pill CTA */}
-                    <Link
-                        href={currentItem.ctaHref}
-                        className="group inline-flex items-center gap-3 rounded-full border border-white/35 bg-white/10 px-6 py-2.5 text-xs font-medium tracking-wide text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white hover:bg-[#d8a477] hover:text-[#24140B] active:scale-95"
-                    >
-                        <span>{currentItem.ctaLabel}</span>
-                        <span
-                            aria-hidden="true"
-                            className="text-sm leading-none transition-transform duration-300 group-hover:translate-x-1"
+                    {/* Bottom-Center: Open menu pill CTA (Always Centered) */}
+                    <div className="flex justify-center">
+                        <Link
+                            href={currentItem.ctaHref}
+                            className="group inline-flex shrink-0 items-center gap-3 whitespace-nowrap rounded-full border border-white/35 bg-white/10 px-6 py-2.5 text-xs font-medium tracking-wide text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white hover:bg-[#d8a477] hover:text-[#24140B] active:scale-95"
                         >
-                            &rsaquo;
-                        </span>
-                    </Link>
+                            <span>{currentItem.ctaLabel}</span>
+                            <span
+                                aria-hidden="true"
+                                className="text-sm leading-none transition-transform duration-300 group-hover:translate-x-1"
+                            >
+                                &rsaquo;
+                            </span>
+                        </Link>
+                    </div>
 
                     {/* Bottom-Right: from [ORIGIN] + subtitle */}
                     <div
                         key={`origin-${currentItem.id}`}
                         className="animate-text-reveal flex flex-col items-center text-center sm:items-end sm:text-right"
                     >
-                        <div className="flex items-baseline gap-2">
+                        <div className="flex items-baseline gap-2 whitespace-nowrap">
                             <span className="font-serif text-sm italic text-white/80 sm:text-base">
                                 {currentItem.originPrefix}
                             </span>
@@ -369,7 +380,7 @@ export default function Hero() {
                                 {currentItem.originTitle}
                             </span>
                         </div>
-                        <span className="mt-0.5 text-[10px] font-normal tracking-wide text-white/75 sm:text-xs">
+                        <span className="mt-0.5 whitespace-nowrap text-[10px] font-normal tracking-wide text-white/75 sm:text-xs">
                             {currentItem.originSubtitle}
                         </span>
                     </div>
