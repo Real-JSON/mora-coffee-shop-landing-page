@@ -3,6 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import {
+    ArrowUpRightIcon,
+    ArrowUpRightIconHandle,
+} from "@animateicons/react/lucide";
 
 export default function BrandStatement() {
     const sectionRef = useRef<HTMLElement | null>(null);
@@ -26,6 +30,8 @@ export default function BrandStatement() {
         return () => observer.disconnect();
     }, []);
 
+    const iconRef = useRef<ArrowUpRightIconHandle>(null);
+
     return (
         <section
             ref={sectionRef}
@@ -41,6 +47,16 @@ export default function BrandStatement() {
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"
             />
+
+            {/* Giant Vertical Right-Side Watermark Placeholder (Tablet & Desktop only) */}
+            <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-10 right-0 z-0 hidden select-none items-center justify-end overflow-hidden md:flex lg:inset-y-14"
+            >
+                <span className="font-sans origin-center translate-x-[28%] -rotate-90 whitespace-nowrap font-extrabold uppercase leading-none tracking-[-0.04em] text-[#f7efe4]/[0.035] text-[clamp(120px,13vw,200px)]">
+                    RITUAL
+                </span>
+            </div>
 
             <div className="section-shell relative z-10 mx-auto max-w-[1320px] px-6 sm:px-10 lg:px-14">
                 <div className="grid items-center gap-12 md:grid-cols-[0.92fr_1.08fr] md:gap-14 lg:gap-24">
@@ -78,7 +94,7 @@ export default function BrandStatement() {
                             </div>
 
                             {/* Floating Pill Tag Anchored on Circle Edge */}
-                            <span className="eyebrow absolute -bottom-3 -left-4 whitespace-nowrap rounded-full border border-white/20 bg-[#f7efe4] px-4 py-2 text-[9px] font-bold tracking-[0.2em] text-[#211710] shadow-lg transition-transform duration-300 group-hover:-translate-y-1 group-hover:-translate-x-1 sm:bottom-2 sm:-left-6">
+                            <span className="eyebrow absolute -bottom-3 -left-4 whitespace-nowrap rounded-full border border-white/20 bg-[#f7efe4] px-4 py-2 text-[9px] font-bold tracking-[0.2em] text-[#211710] shadow-lg transition-transform duration-300 sm:bottom-2 sm:-left-6">
                                 EST. FOR THE CURIOUS
                             </span>
                         </div>
@@ -123,15 +139,21 @@ export default function BrandStatement() {
                         <div className="mt-9 flex flex-wrap items-center gap-6">
                             <Link
                                 href="/our-story"
-                                className="group inline-flex items-center gap-3 rounded-full border border-white/30 bg-white/10 px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white hover:text-[#211710] active:scale-95"
+                                onMouseEnter={() =>
+                                    iconRef.current?.startAnimation()
+                                }
+                                onMouseLeave={() =>
+                                    iconRef.current?.stopAnimation()
+                                }
+                                className="group inline-flex items-center gap-3 rounded-full border border-white/30 bg-white/10 px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition-all duration-300 hover:bg-[#d8a477] hover:text-[#211710] active:scale-95"
                             >
                                 <span>A little about us</span>
-                                <span
-                                    aria-hidden="true"
-                                    className="text-sm leading-none transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5"
-                                >
-                                    ↗
-                                </span>
+                                <ArrowUpRightIcon
+                                    ref={iconRef}
+                                    size={22}
+                                    duration={1}
+                                    color="currentColor"
+                                />
                             </Link>
 
                             <span className="text-[11px] uppercase tracking-[0.18em] text-white/45">
