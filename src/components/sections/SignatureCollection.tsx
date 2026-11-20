@@ -3,10 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import {
+    ArrowUpRightIcon,
+    ArrowUpRightIconHandle,
+} from "@animateicons/react/lucide";
 import { products, type Product } from "@/data/products";
 
 export default function SignatureCollection() {
     const sectionRef = useRef<HTMLElement | null>(null);
+    const iconRef = useRef<ArrowUpRightIconHandle>(null);
     const [isVisible, setIsVisible] = useState<boolean>(false);
 
     const items: Product[] = products.slice(0, 3);
@@ -64,12 +69,12 @@ export default function SignatureCollection() {
                 className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"
             />
 
-            {/* Subtle Giant Background Brand Watermark */}
+            {/* Giant Vertical Right-Side Watermark Placeholder (Tablet & Desktop only) */}
             <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 top-[210px] z-0 flex select-none justify-center overflow-hidden sm:top-[225px] lg:top-[220px]"
+                className="pointer-events-none absolute inset-y-10 right-0 z-0 hidden select-none items-center justify-end overflow-hidden md:flex lg:inset-y-14"
             >
-                <span className="whitespace-nowrap font-black uppercase leading-none tracking-[-0.04em] text-white/[0.035] text-[104px] sm:text-[170px] md:text-[220px] lg:text-[280px]">
+                <span className="font-sans origin-center translate-x-[28%] -rotate-90 whitespace-nowrap font-extrabold uppercase leading-none tracking-[-0.04em] text-[#f7efe4]/[0.035] text-[clamp(120px,13vw,200px)]">
                     MŌRA
                 </span>
             </div>
@@ -100,19 +105,28 @@ export default function SignatureCollection() {
                         </h2>
                     </div>
 
-                    <div className="max-w-[340px]">
+                    <div className="flex max-w-[340px] flex-col items-start">
                         <p className="text-sm leading-7 text-white/75">
                             A few favourites, made with intention. Explore
                             expressive blends and little twists on the classics.
                         </p>
                         <Link
                             href="/menu"
-                            className="group eyebrow mt-5 inline-flex items-center gap-3 border-b border-white/40 pb-2.5 text-xs font-bold tracking-[0.16em] text-[#f7efe4] transition-colors duration-200 hover:border-[#d6a174] hover:text-[#d6a174]"
+                            onMouseEnter={() =>
+                                iconRef.current?.startAnimation()
+                            }
+                            onMouseLeave={() =>
+                                iconRef.current?.stopAnimation()
+                            }
+                            className="group mt-6 inline-flex items-center gap-3 rounded-full border border-white/30 bg-white/10 px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition-all duration-300 hover:border-[#d8a477] hover:bg-[#d8a477] hover:text-[#211710] active:scale-95"
                         >
                             <span>View the full menu</span>
-                            <span className="transition-transform duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-0.5">
-                                ↗
-                            </span>
+                            <ArrowUpRightIcon
+                                ref={iconRef}
+                                size={22}
+                                duration={1}
+                                color="currentColor"
+                            />
                         </Link>
                     </div>
                 </div>
